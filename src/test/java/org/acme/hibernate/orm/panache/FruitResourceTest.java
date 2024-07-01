@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.jboss.resteasy.reactive.RestResponse.StatusCode.NO_CONTENT;
 
 class FruitResourceTest {
 
@@ -33,5 +34,14 @@ class FruitResourceTest {
                 .body(
                     containsString("\"id\":"),
                     containsString("\"name\":\"Pineapple\""));
+    }
+
+    @Test
+    public void testDeleteFruit() {
+        given()
+                .when()
+                .delete("/fruits/1")
+                .then()
+                .statusCode(NO_CONTENT);
     }
 }

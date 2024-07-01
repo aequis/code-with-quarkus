@@ -39,6 +39,16 @@ public class FruitResource {
                 .onItem().ifNull().continueWith(Response.ok().status(Response.Status.NOT_FOUND)::build);
     }
 
+    @Path("/{id}")
+    @DELETE
+    public Uni<Response> delete(Long id) {
+        return Panache
+                .withTransaction(() -> Fruit.deleteById(id))
+                .map(deleted -> deleted
+                    ? Response.ok().status(Response.Status.NO_CONTENT).build()
+                    : Response.ok().status(Response.Status.NOT_FOUND).build());
+    }
+
     @POST
     public Uni<RestResponse<Fruit>> create(Fruit fruit) {
         return Panache.withTransaction(fruit::persist).replaceWith(RestResponse.status(RestResponse.Status.CREATED, fruit));
